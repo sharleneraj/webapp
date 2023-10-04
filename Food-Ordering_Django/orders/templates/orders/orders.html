@@ -1,0 +1,85 @@
+{% extends 'orders/extra.html' %}
+{% load custom_tags %}
+
+{% block content %}
+
+<div class="container-fluid" style="margin-top:100px; color:black;">
+  <div class="row justify-content-center">
+    {% if user.is_superuser %}
+      <h2>(These are the orders received)</h2>
+    {% else %}
+      <h2> Orders by: {{user.get_username}} </h2>
+    {% endif %}
+
+    <table class="table">
+        <thead class="thead-light">
+        <tr>
+          <th scope="col">Order ID</th>
+          <th scope="col">Ordered by</th>
+          <th scope="col">Date</th>
+          <th scope="col">Order</th>
+          <th scope="col">Amount Paid</th>
+        </tr>
+        </thead>
+        <tbody id = "orders_table">
+          {% for row in rows %}
+          {% if row.delivered %}
+            <tr class="table-success">
+          {% else %}
+            <tr class="table-danger mark-as-complete">
+          {% endif %}
+              <td>{{row.id}}</td>
+              <td>{{row.username}}</td>
+              <td>{{row.time_of_order}}</td>
+              <td >
+                <ul>
+                  {% for item in row.order|format_cart %}
+                    <li>{{item|format_cart_item}}</li>
+                  {% endfor %}
+                </ul>
+              </td>
+              <td>Rs {{row.price}}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+    </table>
+{% if user.is_superuser %}
+      <div id="CategoryChart" style="width: 400px; height: 400px; margin: 40px auto;"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/apexcharts@3.28.3"></script>
+<script>
+  // Category data
+  const CategoryData = [
+    { status: 'Platters', count: 5 },
+    { status: 'Salads', count: 2 },
+    { status: 'Subs', count: 3 },
+    { status: 'Pizza', count: 4 },
+    { status: 'Pasta', count: 1 },
+  ];
+
+  // Generate rental status chart
+  const CategoryChartOptions = {
+    chart: {
+      type: 'donut',
+      height: '400px',
+      toolbar: {
+        show: false,
+      },
+    },
+    series: CategoryData.map((status) => status.count),
+    labels: CategoryData.map((status) => status.status),
+    legend: {
+      position: 'bottom',
+    },
+  };
+  const CategoryChart = new ApexCharts(document.querySelector('#CategoryChart'), CategoryChartOptions);
+  CategoryChart.render();
+</script>
+{% endif %}
+  </div>
+</div>
+
+
+
+
+{% endblock %}

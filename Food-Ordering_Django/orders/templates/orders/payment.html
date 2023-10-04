@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Page</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container">
+    <div class="row justify-content-center mt-5">
+      <div class="col-lg-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Payment Details</h5>
+            <form>
+              <div class="mb-3">
+                <label for="cardNumber" class="form-label">Card Number</label>
+                <input type="text" class="form-control" id="cardNumber" placeholder="Enter card number" required>
+              </div>
+              <div class="mb-3">
+                <label for="expirationDate" class="form-label">Expiration Date</label>
+                <input type="text" class="form-control" id="expirationDate" placeholder="MM/YY" required>
+              </div>
+              <div class="mb-3">
+                <label for="cvv" class="form-label">CVV</label>
+                <input type="password" class="form-control" id="cvv" placeholder="CVV" required>
+              </div>
+              <div class="mb-3">
+                <label for="name" class="form-label">Cardholder Name</label>
+                <input type="text" class="form-control" id="name" placeholder="Enter cardholder name" required>
+              </div>
+              <form action="{% url 'success' %}" method="post">
+               {% csrf_token %}
+               <button type="submit" class="btn btn-primary">Pay Now</button>
+              </form>
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"></script>
+</body>
+</html>
